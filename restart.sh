@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
-# usage: bash restart.sh PORT DATA_DIRECTORY
+
+if [ $# -lt 2 ]; then
+	echo "usage: bash restart.sh PORT DATA_DIRECTORY" 1>&2
+	exit 2
+fi
 
 docker container rm -f 'water-and-land'
 docker build . -t 'water-and-land'

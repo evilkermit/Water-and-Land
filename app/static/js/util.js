@@ -1,42 +1,88 @@
-function populateOptions() {
-	getVariableNames(document.getElementById("basin-output").value).then((data) => {
-		fillOptions(document.getElementById('varname-output'), data);
-		render();
+window.scenarios = [];
+
+function addScenario() {
+	const grid = document.querySelector('.grid')
+	const index = window.scenarios.length + 1; // index of this new scenario
+
+	const plotEl = document.createElement('div');
+	plotEl.innerHTML = `
+		<img class="render"></img>
+		<button class="delete-btn" type="button">Delete</button>
+	`;
+
+	plotEl.querySelector('.delete-btn').addEventListener('click', () => {
+		removeScenario(index, plotEl);
 	});
+
+	grid.appendChild(plotEl);
+	grid.querySelector('.placeholder').hidden = true;
+
+	window.scenarios.push({
+		basin: document.querySelector('#basin').value,
+		element: plotEl,
+		scenario: document.querySelector('#scenario').value,
+		variable: document.querySelector('#variable').value,
+	});
+
+	render();
 }
 
-function getVariableNames(path, type) {
-	return fetch('/getVariableNames/', {
-		method: 'POST',
-		headers: { 'Content-Type': 'application/json' },
+function removeScenario(index, el) {
+	el.remove();
+	window.scenarios.splice(index, 1);
+
+	if (window.scenarios.length < 1) {
+		document.querySelector('.grid .placeholder').hidden = false;
+	}
+
+	render();
+}
+
+function getVariables(basin) {
+	const select = document.querySelector('#variable');
+	select.innerHTML = '';
+
+	fetch('/getVariableNames/', {
 		body: JSON.stringify({
-			ncpath: path,
+			ncpath: basin,
 		}),
-	}).then(res => res.json());
-}
+		headers: { 'Content-Type': 'application/json' },
+		method: 'POST',
+	}).then((res) => res.json()).then((data) => {
+		for (let index = 0; index < data.length; index++) {
+			const option = document.createElement('option');
+			option.text = data[index].replaceAll('_', ' ');
+			option.value = data[index];
 
-function fillOptions(el, optionsList) {
-	while (el.options.length) el.remove(0);
-	optionsList.forEach(optionText => {
-		const option = document.createElement('option');
-		option.text = optionText.replaceAll('_', ' ');
-		option.value = optionText;
-		el.appendChild(option);
+			select.appendChild(option);
+		}
 	});
 }
 
-window.onload = () => {
-	fetch('/getBasins/').then(res => res.json()).then((basins) => {
-		const select = document.querySelector('#basin-output');
+function getBasins() {
+	fetch('/getBasins/').then((res) => res.json()).then((basins) => {
+		const select = document.querySelector('#basin');
+		select.innerHTML = '';
 
-		for (let idx = 0; idx < basins.length; idx++) {
+		for (let index = 0; index < basins.length; index++) {
 			const option = document.createElement('option');
-			option.text = basins[idx].replaceAll('_', ' ');
-			option.value = basins[idx];
+			option.text = basins[index].replaceAll('_', ' ');
+			option.value = basins[index];
 
 			select.appendChild(option);
 		}
 
-		populateOptions();
+		if (basins.length > 0) {
+			getVariables(basins[0]);
+		}
+	});
+}
+
+window.onload = () => {
+	getBasins();
+
+	const basinEl = document.querySelector('#basin');
+	basinEl.addEventListener('change', (event) => {
+		getVariables(event.target.value);
 	});
 }
