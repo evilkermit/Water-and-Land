@@ -1,4 +1,5 @@
 from datetime import date
+import os
 
 import matplotlib
 import matplotlib.pyplot as plt
@@ -8,8 +9,12 @@ import numpy as np
 
 matplotlib.use('Agg')
 
-def graph(i_ncpath, i_variable, i_date, i_hour):
-    filepath = i_ncpath
+dataloc = os.path.join('/data/')
+
+def graph(scenario, basin, i_variable, i_date, i_hour):
+    basin_path = os.path.join(dataloc, scenario, basin)
+    nc_filename = os.listdir(basin_path)[0] # TODO: see comment in app.py on listdir
+    filepath = os.path.join(basin_path, nc_filename)
     month, day, year = i_date.split('/')
     month = int(month)
     day = int(day)
@@ -76,7 +81,7 @@ def graph(i_ncpath, i_variable, i_date, i_hour):
         pass
 
     var_name = i_variable.replace('_', ' ')
-    ax.set_title(var_name, ha='center', y = 1.02,  wrap=True)
+    ax.set_title(f'{scenario} {basin} {var_name}', ha='center', y = 1.02,  wrap=True)
     ax.set_ylabel('Latitude')
     ax.set_xlabel('Longitude')
     ax.set_xticks(indexed_lons, lons, rotation=90, fontsize=8)

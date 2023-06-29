@@ -72,7 +72,7 @@ def render():
 
     basin_path = os.path.join(dataloc, scenario, basin)
     nc_filename = os.listdir(basin_path)[0] # TODO: see above comment on listdir
-    fig = graph(os.path.join(basin_path, nc_filename), variable, date, hour)
+    fig = graph(scenario, basin, variable, date, hour)
 
     image_data = BytesIO()
 
