@@ -17,6 +17,8 @@ function render() {
 			const image = scenario.element.querySelector('.render');
 
 			image.src = imageURL;
+
+			scenario.element.hidden = false;
 		});
 	}
 }

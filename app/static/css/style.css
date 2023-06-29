@@ -4,6 +4,12 @@ html {
 	padding: 1em;
 }
 
+body {
+	align-items: center;
+	display: flex;
+	flex-direction: column;
+}
+
 h1, h2, h3, h4, h5, h6 {
 	margin-bottom: 1em;
 }
@@ -25,6 +31,7 @@ select {
 	border-radius: 4px;
 	display: flex;
 	flex-direction: column;
+	margin-bottom: 2em;
 	padding: 1em;
 	width: fit-content;
 }
@@ -40,4 +47,29 @@ select {
 
 .grid {
 	display: flex;
+	margin-bottom: 2em;
+}
+
+.grid .plot {
+	border: 1px solid black;
+	border-radius: 4px;
+	padding: 1em;
+	position: relative;
+}
+
+.grid .plot:not(:last-child) {
+	margin-right: 0.5em;
+}
+
+.grid .plot .delete-btn {
+	position: absolute;
+	right: 1em;
+	top: 1em;
+}
+
+.time-control {
+	border: 1px solid black;
+	border-radius: 4px;
+	padding: 1em;
+	width: fit-content;
 }

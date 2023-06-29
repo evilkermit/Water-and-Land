@@ -5,6 +5,8 @@ function addScenario() {
 	const index = window.scenarios.length + 1; // index of this new scenario
 
 	const plotEl = document.createElement('div');
+	plotEl.classList.add('plot');
+	plotEl.hidden = true;
 	plotEl.innerHTML = `
 		<img class="render"></img>
 		<button class="delete-btn" type="button">Delete</button>

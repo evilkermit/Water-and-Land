@@ -83,7 +83,8 @@ def render():
 
     return send_file(image_data, mimetype='image/png')
 
-@app.route('/data/', methods=["POST"])
+# TODO: what is the point of this?
+@app.route('/data/', methods=['POST'])
 def get_data():
     body = request.get_json()
 
@@ -92,9 +93,9 @@ def get_data():
     date = body['date']
     hour = body['hour']
 
-    numpy_arr = get_numpy(dataloc + ncpath + ".nc", variable, date, hour)
+    numpy_arr = get_numpy(dataloc + ncpath + '.nc', variable, date, hour)
 
     return jsonify(numpy_arr.tolist())
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     app.run(host='0.0.0.0')
