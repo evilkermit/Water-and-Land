@@ -1,6 +1,13 @@
 import netCDF4
 
 def getVariableNames(path):
+    usableVariables = []
+
     f = netCDF4.Dataset(path)
     variables = f.variables.keys()
-    return [v for v in list(variables) if len(f.variables[v]) > 24 ]
+    for var in variables:
+        dimensions = f.variables[var].get_dims()
+        if dimensions[0].name == 'time' and dimensions[1].name == 'longitude' and dimensions[2].name == 'latitude':
+            usableVariables.append(var)
+
+    return usableVariables
