@@ -19,13 +19,13 @@
 		<h2>New Scenario</h2>
 
 		<label>
-			Basin
-			<select id="basin"></select>
+			Scenario
+			<select id="scenario"></select>
 		</label>
 
 		<label>
-			Scenario
-			<select id="scenario"></select>
+			Basin
+			<select id="basin"></select>
 		</label>
 
 		<label>
@@ -45,12 +45,12 @@
 
 		<label>
 			Date
-			<input id="date" type="date" min="2016-08-01" max="2019-12-31" value="2016-08-01" />
+			<input id="date" type="date" min="2016-08-01" max="2019-12-31" value="2016-08-01" onchange="render()" />
 		</label>
 
 		<label>
 			Hour
-			<input id="hour" type="number" min="0" max="23" value="0" />
+			<input id="hour" type="number" min="0" max="23" value="0" onchange="render()" />
 		</label>
 
 		<button type="button">arrow-right</button>

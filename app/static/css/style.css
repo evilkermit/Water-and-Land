@@ -16,6 +16,10 @@ h2 {
 	font-size: 1.125em;
 }
 
+select {
+	text-transform: capitalize;
+}
+
 .inputs {
 	border: 1px solid black;
 	border-radius: 4px;
@@ -32,4 +36,8 @@ h2 {
 .inputs button {
 	cursor: pointer;
 	width: fit-content;
+}
+
+.grid {
+	display: flex;
 }

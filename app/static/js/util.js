@@ -38,21 +38,18 @@ function removeScenario(index, el) {
 	render();
 }
 
-function getVariables(basin) {
+function getVariables() {
+	const scenario = document.querySelector('#scenario').value;
+	const basin = document.querySelector('#basin').value;
+
 	const select = document.querySelector('#variable');
 	select.innerHTML = '';
 
-	fetch('/getVariableNames/', {
-		body: JSON.stringify({
-			ncpath: basin,
-		}),
-		headers: { 'Content-Type': 'application/json' },
-		method: 'POST',
-	}).then((res) => res.json()).then((data) => {
-		for (let index = 0; index < data.length; index++) {
+	fetch(`/getVariables/?scenario=${scenario}&basin=${basin}`).then((res) => res.json()).then((variables) => {
+		for (let index = 0; index < variables.length; index++) {
 			const option = document.createElement('option');
-			option.text = data[index].replaceAll('_', ' ');
-			option.value = data[index];
+			option.text = variables[index].replaceAll('_', ' ');
+			option.value = variables[index];
 
 			select.appendChild(option);
 		}
@@ -60,7 +57,9 @@ function getVariables(basin) {
 }
 
 function getBasins() {
-	fetch('/getBasins/').then((res) => res.json()).then((basins) => {
+	const scenario = document.querySelector('#scenario').value;
+
+	fetch(`/getBasins/?scenario=${scenario}`).then((res) => res.json()).then((basins) => {
 		const select = document.querySelector('#basin');
 		select.innerHTML = '';
 
@@ -72,17 +71,37 @@ function getBasins() {
 			select.appendChild(option);
 		}
 
-		if (basins.length > 0) {
-			getVariables(basins[0]);
+		getVariables();
+	});
+}
+
+function getScenarios() {
+	fetch('/getScenarios/').then((res) => res.json()).then((scenarios) => {
+		const select = document.querySelector('#scenario');
+		select.innerHTML = '';
+
+		for (let index = 0; index < scenarios.length; index++) {
+			const option = document.createElement('option');
+			option.text = scenarios[index].replaceAll('_', ' ');
+			option.value = scenarios[index];
+
+			select.appendChild(option);
 		}
+
+		getBasins();
 	});
 }
 
 window.onload = () => {
-	getBasins();
+	getScenarios();
+
+	const scenarioEl = document.querySelector('#scenario');
+	scenarioEl.addEventListener('change', () => {
+		getBasins();
+	});
 
 	const basinEl = document.querySelector('#basin');
-	basinEl.addEventListener('change', (event) => {
-		getVariables(event.target.value);
+	basinEl.addEventListener('change', () => {
+		getVariables();
 	});
 }

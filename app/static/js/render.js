@@ -4,9 +4,10 @@ function render() {
 
 		fetch('/render/', {
 			body: JSON.stringify({
+				basin: scenario.basin,
 				date: document.querySelector('#date').value,
 				hour: document.querySelector('#hour').value,
-				ncpath: scenario.basin,
+				scenario: scenario.scenario,
 				variable: scenario.variable,
 			}),
 			headers: {'Content-Type': 'application/json'},

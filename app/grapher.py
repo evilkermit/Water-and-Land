@@ -1,14 +1,14 @@
-
 from datetime import date
 
-import netCDF4
-
-import numpy as np
 import matplotlib
-from matplotlib import pyplot as plt
+import matplotlib.pyplot as plt
+import netCDF4
+import numpy as np
+
+
 matplotlib.use('Agg')
 
-def graph(i_ncpath, i_variable, i_date, i_hour, i_rname):
+def graph(i_ncpath, i_variable, i_date, i_hour):
     filepath = i_ncpath
     month, day, year = i_date.split('/')
     month = int(month)

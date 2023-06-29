@@ -14,7 +14,6 @@ COPY ./app/static /app/static/
 COPY ./app/templates /app/templates/
 COPY ./app/app.py /app/
 COPY ./app/grapher.py /app/
-COPY ./app/utils.py /app/
 
 ENTRYPOINT [ "python3" ]
 CMD [ "app.py" ]
