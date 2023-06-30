@@ -47,6 +47,9 @@ select {
 
 .grid {
 	display: flex;
+	flex-wrap: wrap;
+	gap: 1em;
+	justify-content: center;
 	margin-bottom: 2em;
 }
 
@@ -57,13 +60,9 @@ select {
 	position: relative;
 }
 
-.grid .plot:not(:last-child) {
-	margin-right: 0.5em;
-}
-
 .grid .plot .delete-btn {
 	position: absolute;
-	right: 1em;
+	left: 1em;
 	top: 1em;
 }
 

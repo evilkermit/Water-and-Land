@@ -17,30 +17,32 @@ dataloc = os.path.join('/data/')
 def index():
     return render_template('index.html')
 
-@app.route('/getScenarios/', methods=['GET'])
-def getScenarios():
-    scenarios = []
-    for file in os.listdir(dataloc):
-        scenarios.append(os.path.splitext(file)[0])
-
-    return jsonify(scenarios)
-
 @app.route('/getBasins/', methods=['GET'])
 def getBasins():
-    scenario = request.args.get('scenario')
-
     basins = []
-    for file in os.listdir(os.path.join(dataloc, scenario)):
+    for file in os.listdir(dataloc):
         basins.append(file)
 
+    basins.sort()
     return jsonify(basins)
+
+@app.route('/getScenarios/', methods=['GET'])
+def getScenarios():
+    basin = request.args.get('basin')
+
+    scenarios = []
+    for file in os.listdir(os.path.join(dataloc, basin)):
+        scenarios.append(os.path.splitext(file)[0])
+
+    scenarios.sort()
+    return jsonify(scenarios)
 
 @app.route('/getVariables/', methods=['GET'])
 def getVariables():
-    scenario = request.args.get('scenario')
     basin = request.args.get('basin')
+    scenario = request.args.get('scenario')
 
-    basin_path = os.path.join(dataloc, scenario, basin)
+    basin_path = os.path.join(dataloc, basin, scenario)
     nc_filename = os.listdir(basin_path)[0] # TODO: this makes the assumption that each scenario/basin has a single file, which may not be valid at some point
     nc_file = netCDF4.Dataset(os.path.join(basin_path, nc_filename))
 
@@ -51,6 +53,7 @@ def getVariables():
         if dimensions[0].name == 'time' and dimensions[1].name == 'longitude' and dimensions[2].name == 'latitude':
             usable_variables.append(var)
 
+    usable_variables.sort()
     return jsonify(usable_variables)
 
 @app.route('/render/', methods=['POST'])
@@ -70,12 +73,12 @@ def render():
     date += '/'
     date += date_parts[0]
 
-    basin_path = os.path.join(dataloc, scenario, basin)
-    nc_filename = os.listdir(basin_path)[0] # TODO: see above comment on listdir
-    fig = graph(scenario, basin, variable, date, hour)
+    fig = graph(basin, scenario, variable, date, hour)
 
     image_data = BytesIO()
 
+    fig.set_dpi(300)
+    fig.set_size_inches(4.5, 4.1)
     fig.savefig(image_data, format='png')
     plt.close(fig)
 

@@ -4,6 +4,7 @@
 	<title>Duke Hydrology Coupled Model</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+	<script src="https://kit.fontawesome.com/dd8456309d.js" crossorigin="anonymous"></script>
 	<script src="{{ url_for('static', filename='js/util.js') }}"></script>
 	<script src="{{ url_for('static', filename='js/render.js') }}"></script>
 
@@ -19,13 +20,13 @@
 		<h2>New Scenario</h2>
 
 		<label>
-			Scenario
-			<select id="scenario"></select>
+			Basin
+			<select id="basin"></select>
 		</label>
 
 		<label>
-			Basin
-			<select id="basin"></select>
+			Scenario
+			<select id="scenario"></select>
 		</label>
 
 		<label>
@@ -33,7 +34,9 @@
 			<select id="variable"></select>
 		</label>
 
-		<button id="add-scenario" type="button" onclick="addScenario()">Add</button>
+		<button id="add-scenario" type="button" onclick="addScenario()">
+			<i class="fa-solid fa-plus"></i>
+		</button>
 	</form>
 
 	<div class="grid">

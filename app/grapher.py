@@ -11,8 +11,8 @@ matplotlib.use('Agg')
 
 dataloc = os.path.join('/data/')
 
-def graph(scenario, basin, variable, date, hour):
-    basin_path = os.path.join(dataloc, scenario, basin)
+def graph(basin, scenario, variable, date, hour):
+    basin_path = os.path.join(dataloc, basin, scenario)
     nc_filename = os.listdir(basin_path)[0] # TODO: see comment in app.py on listdir
     filepath = os.path.join(basin_path, nc_filename)
 

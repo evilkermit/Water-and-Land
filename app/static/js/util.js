@@ -9,7 +9,9 @@ function addScenario() {
 	plotEl.hidden = true;
 	plotEl.innerHTML = `
 		<img class="render"></img>
-		<button class="delete-btn" type="button">Delete</button>
+		<button class="delete-btn" type="button">
+			<i class="fa-solid fa-trash"></i>
+		</button>
 	`;
 
 	plotEl.querySelector('.delete-btn').addEventListener('click', () => {
@@ -41,13 +43,13 @@ function removeScenario(index, el) {
 }
 
 function getVariables() {
-	const scenario = document.querySelector('#scenario').value;
 	const basin = document.querySelector('#basin').value;
+	const scenario = document.querySelector('#scenario').value;
 
-	const select = document.querySelector('#variable');
-	select.innerHTML = '';
+	fetch(`/getVariables/?basin=${basin}&scenario=${scenario}`).then((res) => res.json()).then((variables) => {
+		const select = document.querySelector('#variable');
+		select.innerHTML = '';
 
-	fetch(`/getVariables/?scenario=${scenario}&basin=${basin}`).then((res) => res.json()).then((variables) => {
 		for (let index = 0; index < variables.length; index++) {
 			const option = document.createElement('option');
 			option.text = variables[index].replaceAll('_', ' ');
@@ -58,27 +60,10 @@ function getVariables() {
 	});
 }
 
-function getBasins() {
-	const scenario = document.querySelector('#scenario').value;
-
-	fetch(`/getBasins/?scenario=${scenario}`).then((res) => res.json()).then((basins) => {
-		const select = document.querySelector('#basin');
-		select.innerHTML = '';
-
-		for (let index = 0; index < basins.length; index++) {
-			const option = document.createElement('option');
-			option.text = basins[index].replaceAll('_', ' ');
-			option.value = basins[index];
-
-			select.appendChild(option);
-		}
-
-		getVariables();
-	});
-}
-
 function getScenarios() {
-	fetch('/getScenarios/').then((res) => res.json()).then((scenarios) => {
+	const basin = document.querySelector('#basin').value;
+
+	fetch(`/getScenarios/?basin=${basin}`).then((res) => res.json()).then((scenarios) => {
 		const select = document.querySelector('#scenario');
 		select.innerHTML = '';
 
@@ -90,20 +75,37 @@ function getScenarios() {
 			select.appendChild(option);
 		}
 
-		getBasins();
+		getVariables();
+	});
+}
+
+function getBasins() {
+	fetch('/getBasins/').then((res) => res.json()).then((basins) => {
+		const select = document.querySelector('#basin');
+		select.innerHTML = '';
+
+		for (let index = 0; index < basins.length; index++) {
+			const option = document.createElement('option');
+			option.text = basins[index].replaceAll('_', ' ');
+			option.value = basins[index];
+
+			select.appendChild(option);
+		}
+
+		getScenarios();
 	});
 }
 
 window.onload = () => {
-	getScenarios();
-
-	const scenarioEl = document.querySelector('#scenario');
-	scenarioEl.addEventListener('change', () => {
-		getBasins();
-	});
+	getBasins();
 
 	const basinEl = document.querySelector('#basin');
 	basinEl.addEventListener('change', () => {
+		getScenarios();
+	});
+
+	const scenarioEl = document.querySelector('#scenario');
+	scenarioEl.addEventListener('change', () => {
 		getVariables();
 	});
 }
