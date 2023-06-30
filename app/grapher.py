@@ -9,10 +9,8 @@ import numpy as np
 
 matplotlib.use('Agg')
 
-dataloc = os.path.join('/data/')
-
-def graph(basin, scenario, variable, date, hour):
-    basin_path = os.path.join(dataloc, basin, scenario)
+def graph(data_dir, ranges, basin, scenario, variable, date, hour):
+    basin_path = os.path.join(data_dir, 'nc', basin, scenario)
     nc_filename = os.listdir(basin_path)[0] # TODO: see comment in app.py on listdir
     filepath = os.path.join(basin_path, nc_filename)
 
@@ -65,7 +63,7 @@ def graph(basin, scenario, variable, date, hour):
 
     fig = plt.figure()
     ax = fig.add_subplot(111)
-    im = ax.imshow(data)
+    im = ax.imshow(data, vmin=ranges[variable][0], vmax=ranges[variable][1])
     cbar = fig.colorbar(im, ax=ax)
     try:
         tmp = vars.getncattr('units')
