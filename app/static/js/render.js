@@ -1,4 +1,4 @@
-function render() {
+function _render() {
 	for (let index = 0; index < window.scenarios.length; index++) {
 		const scenario = window.scenarios[index];
 
@@ -21,4 +21,10 @@ function render() {
 			scenario.element.hidden = false;
 		});
 	}
+}
+
+const throttledRender = _.throttle(_render, 1000);
+
+function render() {
+	throttledRender();
 }

@@ -4,6 +4,7 @@
 	<title>Duke Hydrology Coupled Model</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+	<script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
 	<script src="https://kit.fontawesome.com/dd8456309d.js" crossorigin="anonymous"></script>
 	<script src="{{ url_for('static', filename='js/util.js') }}"></script>
 	<script src="{{ url_for('static', filename='js/render.js') }}"></script>
@@ -34,7 +35,7 @@
 			<select id="variable"></select>
 		</label>
 
-		<button id="add-scenario" type="button" onclick="addScenario()">
+		<button id="add-scenario" type="button" onclick="window.addScenario()">
 			<i class="fa-solid fa-plus"></i>
 		</button>
 	</form>
@@ -46,19 +47,37 @@
 	<div class="time-control">
 		<h2>Time Selection</h2>
 
-		<button type="button">arrow-left</button>
+		<div>
+			<label>
+				Date
 
-		<label>
-			Date
-			<input id="date" type="date" min="2016-08-01" max="2019-12-31" value="2016-08-01" onchange="render()" />
-		</label>
+				<button type="button" onclick="window.subtractDay(true)">
+					<i class="fa-solid fa-arrow-left"></i>
+				</button>
 
-		<label>
-			Hour
-			<input id="hour" type="number" min="0" max="23" value="0" onchange="render()" />
-		</label>
+				<input id="date" type="date" min="2016-11-02" max="2019-12-31" value="2016-11-02" onchange="window.render()" />
 
-		<button type="button">arrow-right</button>
+				<button type="button" onclick="window.addDay(true)">
+					<i class="fa-solid fa-arrow-right"></i>
+				</button>
+			</label>
+		</div>
+
+		<div>
+			<label>
+				Hour
+
+				<button type="button" onclick="window.subtractHour(true)">
+					<i class="fa-solid fa-arrow-left"></i>
+				</button>
+
+				<input id="hour" type="number" min="0" max="23" value="0" onchange="window.render()" />
+
+				<button type="button" onclick="window.addHour(true)">
+					<i class="fa-solid fa-arrow-right"></i>
+				</button>
+			</label>
+		</div>
 	</div>
 </body>
 </html>

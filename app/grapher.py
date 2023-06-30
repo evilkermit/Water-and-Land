@@ -19,13 +19,12 @@ def graph(data_dir, ranges, basin, scenario, variable, date, hour):
 
     day_of_year = datetime.date(year, month, day).timetuple().tm_yday
 
-    # TODO: Figure out what on Earth the point of these offsets are
     offset = 0
     if year == 2016:
-        offset = day_of_year - 214
+        offset = day_of_year - 306
 
     year_offset = year - 2017
-    day_2016_offset = 366-214
+    day_2016_offset = 366 - 306
     offset = 365 * year_offset + day_2016_offset + day_of_year
 
     time_index = offset * 24 + (hour-1)
@@ -72,7 +71,7 @@ def graph(data_dir, ranges, basin, scenario, variable, date, hour):
     except:
         pass
 
-    ax.set_title(f'{scenario} {basin} {variable}', ha='center', y = 1.02, wrap=True)
+    ax.set_title(f'{basin} {scenario} {variable}', ha='center', y = 1.02, wrap=True)
     ax.set_ylabel('Latitude')
     ax.set_xlabel('Longitude')
     ax.set_xticks(indexed_lons, lons, rotation=90, fontsize=8)

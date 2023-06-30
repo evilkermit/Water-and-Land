@@ -67,8 +67,15 @@ select {
 }
 
 .time-control {
+	background: white;
 	border: 1px solid black;
 	border-radius: 4px;
+	bottom: 1em;
 	padding: 1em;
+	position: sticky;
 	width: fit-content;
+}
+
+.time-control > *:not(:last-child) {
+	margin-bottom: 0.5em;
 }

@@ -28,7 +28,7 @@ function addScenario() {
 		variable: document.querySelector('#variable').value,
 	});
 
-	render();
+	window.render();
 }
 
 function removeScenario(index, el) {
@@ -39,7 +39,77 @@ function removeScenario(index, el) {
 		document.querySelector('.grid .placeholder').hidden = false;
 	}
 
-	render();
+	window.render();
+}
+
+function addDay(render) {
+	const dateEl = document.querySelector('#date');
+
+	const date = new Date(dateEl.value);
+	date.setDate(date.getDate() + 1);
+
+	dateEl.valueAsDate = date;
+
+	if (render) {
+		window.render();
+	}
+}
+
+function subtractDay(render) {
+	const dateEl = document.querySelector('#date');
+
+	const date = new Date(dateEl.value);
+	date.setDate(date.getDate() - 1);
+
+	dateEl.valueAsDate = date;
+
+	if (render) {
+		window.render();
+	}
+}
+
+function addHour(render) {
+	const dateEl = document.querySelector('#date');
+	const hourEl = document.querySelector('#hour');
+
+	const oldDate = dateEl.value;
+	let newHour = parseInt(hourEl.value) + 1;
+
+	if (newHour === 24) {
+		addDay();
+
+		if (dateEl.value !== oldDate) {
+			newHour = 0;
+		}
+	}
+
+	hourEl.value = newHour;
+
+	if (render) {
+		window.render();
+	}
+}
+
+function subtractHour(render) {
+	const dateEl = document.querySelector('#date');
+	const hourEl = document.querySelector('#hour');
+
+	const oldDate = dateEl.value;
+	let newHour = parseInt(hourEl.value) - 1;
+
+	if (newHour === -1) {
+		subtractDay();
+
+		if (dateEl.value !== oldDate) {
+			newHour = 23;
+		}
+	}
+
+	hourEl.value = newHour;
+
+	if (render) {
+		window.render();
+	}
 }
 
 function getVariables() {
@@ -48,6 +118,7 @@ function getVariables() {
 
 	fetch(`/getVariables/?basin=${basin}&scenario=${scenario}`).then((res) => res.json()).then((variables) => {
 		const select = document.querySelector('#variable');
+		const oldValue = select.value;
 		select.innerHTML = '';
 
 		for (let index = 0; index < variables.length; index++) {
@@ -57,6 +128,10 @@ function getVariables() {
 
 			select.appendChild(option);
 		}
+
+		if (oldValue && variables.includes(oldValue)) {
+			select.value = oldValue;
+		}
 	});
 }
 
@@ -65,6 +140,7 @@ function getScenarios() {
 
 	fetch(`/getScenarios/?basin=${basin}`).then((res) => res.json()).then((scenarios) => {
 		const select = document.querySelector('#scenario');
+		const oldValue = select.value;
 		select.innerHTML = '';
 
 		for (let index = 0; index < scenarios.length; index++) {
@@ -75,6 +151,10 @@ function getScenarios() {
 			select.appendChild(option);
 		}
 
+		if (oldValue && scenarios.includes(oldValue)) {
+			select.value = oldValue;
+		}
+
 		getVariables();
 	});
 }
@@ -82,6 +162,7 @@ function getScenarios() {
 function getBasins() {
 	fetch('/getBasins/').then((res) => res.json()).then((basins) => {
 		const select = document.querySelector('#basin');
+		const oldValue = select.value;
 		select.innerHTML = '';
 
 		for (let index = 0; index < basins.length; index++) {
@@ -90,6 +171,10 @@ function getBasins() {
 			option.value = basins[index];
 
 			select.appendChild(option);
+		}
+
+		if (oldValue && basins.includes(oldValue)) {
+			select.value = oldValue;
 		}
 
 		getScenarios();
