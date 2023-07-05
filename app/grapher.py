@@ -62,7 +62,7 @@ def graph(data_dir, ranges, basin, scenario, variable, date, hour):
 
     fig = plt.figure()
     ax = fig.add_subplot(111)
-    im = ax.imshow(data, vmin=ranges[variable][0], vmax=ranges[variable][1])
+    im = ax.imshow(data, vmin=ranges[basin][variable][0], vmax=ranges[basin][variable][1])
     cbar = fig.colorbar(im, ax=ax)
     try:
         tmp = vars.getncattr('units')
