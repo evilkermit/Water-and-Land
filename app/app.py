@@ -81,7 +81,7 @@ def render():
 	image_data = BytesIO()
 
 	fig.set_dpi(300)
-	fig.set_size_inches(4.5, 4.1)
+	fig.set_size_inches(4.8, 4.1)
 	fig.savefig(image_data, format='png')
 	plt.close(fig)
 
