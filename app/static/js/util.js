@@ -2,7 +2,7 @@ window.scenarios = [];
 
 function addScenario() {
 	const grid = document.querySelector('.grid')
-	const index = window.scenarios.length + 1; // index of this new scenario
+	const index = window.scenarios.length;
 
 	const plotEl = document.createElement('div');
 	plotEl.classList.add('plot');
