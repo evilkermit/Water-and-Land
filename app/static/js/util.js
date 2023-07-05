@@ -14,6 +14,10 @@ function addScenario() {
 		</button>
 	`;
 
+	const timeControlEl = document.querySelector('.time-control').cloneNode(true);
+	timeControlEl.style.display = 'block';
+	plotEl.appendChild(timeControlEl);
+
 	plotEl.querySelector('.delete-btn').addEventListener('click', () => {
 		removeScenario(index, plotEl);
 	});
@@ -42,8 +46,18 @@ function removeScenario(index, el) {
 	window.render();
 }
 
-function addDay(render) {
-	const dateEl = document.querySelector('#date');
+function getScenarioEl(event) {
+	for (let index = 0; index < window.scenarios.length; index++) {
+		const element = document.querySelector('.grid').children[index + 1];
+		if (element.contains(event.target)) {
+			return element;
+		}
+	}
+}
+
+function addDay(event, render) {
+	const element = window.getScenarioEl(event);
+	const dateEl = element.querySelector('.date');
 
 	const date = new Date(dateEl.value);
 	date.setDate(date.getDate() + 1);
@@ -51,12 +65,13 @@ function addDay(render) {
 	dateEl.valueAsDate = date;
 
 	if (render) {
-		window.render();
+		window.render(event);
 	}
 }
 
-function subtractDay(render) {
-	const dateEl = document.querySelector('#date');
+function subtractDay(event, render) {
+	const element = window.getScenarioEl(event);
+	const dateEl = element.querySelector('.date');
 
 	const date = new Date(dateEl.value);
 	date.setDate(date.getDate() - 1);
@@ -64,13 +79,14 @@ function subtractDay(render) {
 	dateEl.valueAsDate = date;
 
 	if (render) {
-		window.render();
+		window.render(event);
 	}
 }
 
-function addHour(render) {
-	const dateEl = document.querySelector('#date');
-	const hourEl = document.querySelector('#hour');
+function addHour(event, render) {
+	const element = window.getScenarioEl(event);
+	const dateEl = element.querySelector('.date');
+	const hourEl = element.querySelector('.hour');
 
 	const oldDate = dateEl.value;
 	let newHour = parseInt(hourEl.value) + 1;
@@ -86,13 +102,14 @@ function addHour(render) {
 	hourEl.value = newHour;
 
 	if (render) {
-		window.render();
+		window.render(event);
 	}
 }
 
-function subtractHour(render) {
-	const dateEl = document.querySelector('#date');
-	const hourEl = document.querySelector('#hour');
+function subtractHour(event, render) {
+	const element = window.getScenarioEl(event);
+	const dateEl = element.querySelector('.date');
+	const hourEl = element.querySelector('.hour');
 
 	const oldDate = dateEl.value;
 	let newHour = parseInt(hourEl.value) - 1;
@@ -108,7 +125,7 @@ function subtractHour(render) {
 	hourEl.value = newHour;
 
 	if (render) {
-		window.render();
+		window.render(event);
 	}
 }
 

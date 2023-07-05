@@ -36,6 +36,7 @@
 		</label>
 
 		<button id="add-scenario" type="button" onclick="window.addScenario()">
+			Add
 			<i class="fa-solid fa-plus"></i>
 		</button>
 	</form>
@@ -45,19 +46,22 @@
 	</div>
 
 	<div class="time-control">
-		<h2>Time Selection</h2>
+		<div><label>
+			<input class="link" type="checkbox" checked></input>
+			Link time with other scenarios
+		</label></div>
 
 		<div>
 			<label>
 				Date
 
-				<button type="button" onclick="window.subtractDay(true)">
+				<button type="button" onclick="window.subtractDay(event, true)">
 					<i class="fa-solid fa-arrow-left"></i>
 				</button>
 
-				<input id="date" type="date" min="2016-11-02" max="2019-12-31" value="2016-11-02" onchange="window.render()" />
+				<input class="date" type="date" min="2016-11-02" max="2019-12-31" value="2016-11-02" onchange="window.render(event)" />
 
-				<button type="button" onclick="window.addDay(true)">
+				<button type="button" onclick="window.addDay(event, true)">
 					<i class="fa-solid fa-arrow-right"></i>
 				</button>
 			</label>
@@ -67,13 +71,13 @@
 			<label>
 				Hour
 
-				<button type="button" onclick="window.subtractHour(true)">
+				<button type="button" onclick="window.subtractHour(event, true)">
 					<i class="fa-solid fa-arrow-left"></i>
 				</button>
 
-				<input id="hour" type="number" min="0" max="23" value="0" onchange="window.render()" />
+				<input class="hour" type="number" min="0" max="23" value="0" onchange="window.render(event)" />
 
-				<button type="button" onclick="window.addHour(true)">
+				<button type="button" onclick="window.addHour(event, true)">
 					<i class="fa-solid fa-arrow-right"></i>
 				</button>
 			</label>

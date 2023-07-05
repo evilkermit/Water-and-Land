@@ -40,7 +40,7 @@ select {
 	margin-bottom: 1em;
 }
 
-.inputs button {
+button {
 	cursor: pointer;
 	width: fit-content;
 }
@@ -67,12 +67,10 @@ select {
 }
 
 .time-control {
-	background: white;
-	border: 1px solid black;
-	border-radius: 4px;
-	bottom: 1em;
+	display: none;
+	margin: 0 auto;
 	padding: 1em;
-	position: sticky;
+	text-align: center;
 	width: fit-content;
 }
 
