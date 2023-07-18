@@ -17,6 +17,14 @@ function addScenario() {
 		<div class="container">
 			<img class="plot"></img>
 			<div class="hyperimage" data-dataset="${tapestryConfig}"></div>
+			<div class="zoom-controls">
+				<button type="button" class="zoom-in">
+					<i class="fa-solid fa-magnifying-glass-plus"></i>
+				</button>
+				<button type="button" class="zoom-out">
+					<i class="fa-solid fa-magnifying-glass-minus"></i>
+				</button>
+			</div>
 		</div>
 		<button class="delete-btn" type="button">
 			<i class="fa-solid fa-trash"></i>

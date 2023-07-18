@@ -778,6 +778,60 @@
             return false;
         });
 
+        $('.zoom-in', this.element.closest('.container')).on('click', function(event) {
+            if (self.settings.enableZoom == false)
+                return false;
+
+            const container = $(event.target).closest('.container');
+            const hyperimage = container.find('.hyperimage').eq(0);
+
+            // Normalize the scroll speed using a cumulative moving average
+            const delta_sign = -1;
+            let delta = 30;
+            this.scroll_cma = (this.scroll_cma * this.scroll_counter + delta) * 1.0 / (this.scroll_counter + 1);
+            delta = delta_sign * delta / this.scroll_cma;
+            delta *= 30;
+            this.scroll_counter++; // this will grow indefinitely, must fix later
+
+            this.camera.zoomScale += delta;
+            this.camera.position.elements[2] = this.camera.zoomScale;
+            this.render(this.get_low_resolution());
+
+            clearTimeout($.data(this, 'timer'));
+            $.data(this, 'timer', setTimeout(function() {
+                this.render(0);
+            }.bind(this), 500));
+
+            return false;
+        }.bind(this));
+
+        $('.zoom-out', this.element.closest('.container')).on('click', function(event) {
+            if (self.settings.enableZoom == false)
+                return false;
+
+            const container = $(event.target).closest('.container');
+            const hyperimage = container.find('.hyperimage').eq(0);
+
+            // Normalize the scroll speed using a cumulative moving average
+            const delta_sign = 1;
+            let delta = 30;
+            this.scroll_cma = (this.scroll_cma * this.scroll_counter + delta) * 1.0 / (this.scroll_counter + 1);
+            delta = delta_sign * delta / this.scroll_cma;
+            delta *= 30;
+            this.scroll_counter++; // this will grow indefinitely, must fix later
+
+            this.camera.zoomScale += delta;
+            this.camera.position.elements[2] = this.camera.zoomScale;
+            this.render(this.get_low_resolution());
+
+            clearTimeout($.data(this, 'timer'));
+            $.data(this, 'timer', setTimeout(function() {
+                this.render(0);
+            }.bind(this), 500));
+
+            return false;
+        }.bind(this));
+
         /* 
          * Touch event handlers
          */

@@ -69,6 +69,18 @@ button {
 .grid .scenario .container {
 	display: flex;
 	gap: 1em;
+	position: relative;
+}
+
+.grid .scenario .container .zoom-controls {
+	bottom: 0;
+	position: absolute;
+	right: 0;
+}
+
+.grid .scenario .container button {
+	height: 2em;
+	width: 2em;
 }
 
 .time-control {
