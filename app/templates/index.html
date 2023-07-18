@@ -1,8 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>Duke Hydrology Coupled Model</title>
+	<title>Duke Coupled Hydrology Model</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<!-- Tapestry -->
+	<script src="{{ url_for('static', filename='js/tapestry/jquery-1.12.4.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/tapestry/tools.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/tapestry/sylvester.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/tapestry/math.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/tapestry/arcball.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/tapestry/tapestry.js') }}"></script>
 
 	<script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
 	<script src="https://kit.fontawesome.com/dd8456309d.js" crossorigin="anonymous"></script>
@@ -15,7 +23,7 @@
 </head>
 
 <body>
-	<h1>Duke Hydrology Coupled Model</h1>
+	<h1>Duke Coupled Hydrology Model</h1>
 
 	<form class="inputs">
 		<h2>New Scenario</h2>

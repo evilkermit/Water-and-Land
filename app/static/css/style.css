@@ -53,17 +53,22 @@ button {
 	margin-bottom: 2em;
 }
 
-.grid .plot {
+.grid .scenario {
 	border: 1px solid black;
 	border-radius: 4px;
 	padding: 1em;
 	position: relative;
 }
 
-.grid .plot .delete-btn {
+.grid .scenario .delete-btn {
 	position: absolute;
 	left: 1em;
 	top: 1em;
+}
+
+.grid .scenario .container {
+	display: flex;
+	gap: 1em;
 }
 
 .time-control {

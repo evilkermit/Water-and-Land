@@ -1,4 +1,5 @@
 import datetime
+import json
 import os
 
 import matplotlib
@@ -9,7 +10,7 @@ import numpy as np
 
 matplotlib.use('Agg')
 
-def graph(data_dir, ranges, basin, scenario, variable, date, hour):
+def graph(data_dir, basin, scenario, variable, date, hour):
     basin_path = os.path.join(data_dir, 'nc', basin, scenario)
     nc_filename = os.listdir(basin_path)[0] # TODO: see comment in app.py on listdir
     filepath = os.path.join(basin_path, nc_filename)
@@ -60,6 +61,9 @@ def graph(data_dir, ranges, basin, scenario, variable, date, hour):
     np.copyto(mask, data, where = mask == 0)
     data = mask
 
+    with open(os.path.join(data_dir, 'ranges.json'), 'r') as file:
+        ranges = json.load(file)
+
     fig = plt.figure()
     ax = fig.add_subplot(111)
     im = ax.imshow(data, vmin=ranges[basin][variable][0], vmax=ranges[basin][variable][1])
@@ -78,50 +82,3 @@ def graph(data_dir, ranges, basin, scenario, variable, date, hour):
     ax.set_yticks(indexed_lats, lats, fontsize=8)
     fig.tight_layout()
     return fig
-
-# TODO: what is the point of this
-def get_numpy(i_ncpath, i_variable, i_date, i_hour):
-    filepath = i_ncpath
-    month, day, year = i_date.split('/')
-    month = int(month)
-    day = int(day)
-    year = int(year)
-    hour =int(i_hour)
-
-    day_of_year = date(year, month, day).timetuple().tm_yday
-
-    offset = 0;
-    if year == 2016:
-        offset = day_of_year - 214
-
-    year_offset = year - 2017
-    day_2016_offset = 366-214
-    offset = 365 * year_offset + day_2016_offset + day_of_year
-
-    time_index = offset * 24 + (hour-1)
-
-    f = netCDF4.Dataset(filepath)
-    variables = f.variables.keys()
-
-    lats = f.variables['latitude']
-    lons = f.variables['longitude']
-    lats = lats[:]
-    lons = lons[:]
-
-
-    # (time, long, lat)
-    var = f.variables[i_variable]
-    var = var[time_index, :, :]
-
-    indexed_lats = []
-    for i in range(len(lats)):
-        indexed_lats.append(i)
-    indexed_lons = []
-    for i in range(len(lons)):
-        indexed_lons.append(i)
-
-
-    data = var.transpose()
-
-    numpy_array = np.array(data)
-    return numpy_array

@@ -8,13 +8,12 @@ import matplotlib.pyplot as plt
 import netCDF4
 
 from grapher import graph
-from util import getRanges
+from ranges import getRanges
 
 
 app = Flask(__name__)
 
 dataloc = os.path.join('/data')
-ranges = None
 
 @app.route('/', methods=['GET'])
 def index():
@@ -76,12 +75,12 @@ def render():
 	date += '/'
 	date += date_parts[0]
 
-	fig = graph(dataloc, ranges, basin, scenario, variable, date, hour)
+	fig = graph(dataloc, basin, scenario, variable, date, hour)
 
 	image_data = BytesIO()
 
 	fig.set_dpi(300)
-	fig.set_size_inches(4.8, 4.1)
+	fig.set_size_inches(5.3, 4.2)
 	fig.savefig(image_data, format='png')
 	plt.close(fig)
 
@@ -89,20 +88,8 @@ def render():
 
 	return send_file(image_data, mimetype='image/png')
 
-# TODO: what is the point of this?
-@app.route('/data/', methods=['POST'])
-def get_data():
-	body = request.get_json()
-
-	ncpath = body['ncpath']
-	variable =  body['variable']
-	date = body['date']
-	hour = body['hour']
-
-	numpy_arr = get_numpy(dataloc + ncpath + '.nc', variable, date, hour)
-
-	return jsonify(numpy_arr.tolist())
-
 if __name__ == '__main__':
-	ranges = getRanges(dataloc)
+	if not os.path.exists(os.path.join(dataloc, 'ranges.json')):
+		getRanges(dataloc)
+
 	app.run(host='0.0.0.0')

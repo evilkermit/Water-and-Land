@@ -4,11 +4,20 @@ function addScenario() {
 	const grid = document.querySelector('.grid')
 	const index = window.scenarios.length;
 
-	const plotEl = document.createElement('div');
-	plotEl.classList.add('plot');
-	plotEl.hidden = true;
-	plotEl.innerHTML = `
-		<img class="render"></img>
+	const basin = document.querySelector('#basin').value;
+	const scenario = document.querySelector('#scenario').value;
+	const variable = document.querySelector('#variable').value;
+
+	const tapestryConfig = `${basin}_${scenario.split(' ')[0].toLowerCase()}`;
+
+	const scenarioEl = document.createElement('div');
+	scenarioEl.classList.add('scenario');
+	scenarioEl.hidden = true;
+	scenarioEl.innerHTML = `
+		<div class="container">
+			<img class="plot"></img>
+			<div class="hyperimage" data-dataset="${tapestryConfig}"></div>
+		</div>
 		<button class="delete-btn" type="button">
 			<i class="fa-solid fa-trash"></i>
 		</button>
@@ -16,20 +25,29 @@ function addScenario() {
 
 	const timeControlEl = document.querySelector('.time-control').cloneNode(true);
 	timeControlEl.style.display = 'block';
-	plotEl.appendChild(timeControlEl);
+	scenarioEl.appendChild(timeControlEl);
 
-	plotEl.querySelector('.delete-btn').addEventListener('click', () => {
-		removeScenario(index, plotEl);
+	scenarioEl.querySelector('.delete-btn').addEventListener('click', () => {
+		removeScenario(index, scenarioEl);
 	});
 
-	grid.appendChild(plotEl);
+	grid.appendChild(scenarioEl);
 	grid.querySelector('.placeholder').hidden = true;
 
+	$('.hyperimage', grid).tapestry({
+		variable,
+		animation_interval: 500,
+		n_tiles: 4,
+
+		height: 420,
+		width: 420,
+	});
+
 	window.scenarios.push({
-		basin: document.querySelector('#basin').value,
-		element: plotEl,
-		scenario: document.querySelector('#scenario').value,
-		variable: document.querySelector('#variable').value,
+		basin,
+		scenario,
+		variable,
+		element: scenarioEl,
 	});
 
 	window.render();
