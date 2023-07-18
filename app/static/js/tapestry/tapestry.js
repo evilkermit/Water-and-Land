@@ -206,7 +206,7 @@
     Tapestry.prototype.setup_camera = function(position, up)
     {
         this.camera = new ArcBall();
-        this.camera.up = (typeof up !== 'undefined' ? up : $V([0, 1, 0, 1.0]));
+        this.camera.up = (typeof up !== 'undefined' ? up : $V([0, -1, 0, 1.0]));
         this.camera.position = (typeof position !== 'undefined' ? position : $V([0, 0, this.settings.zoom, 1.0]));
 
         this.camera.setBounds(this.settings.width, this.settings.height);
@@ -402,7 +402,7 @@
         }
 
         var path = host + "image/" + dataset + "/" + x + "/" + z + "/" + y
-            + "/" + (-upx) + "/" + (-upz) + "/" + (-upy) + "/"
+            + "/" + upx + "/" + upz + "/" + upy + "/"
             + viewx + "/" + viewz + "/" + viewy + "/"
             + quality.toString() + "/" + options_str;
         return path;
@@ -712,7 +712,8 @@
             self.is_drag = true;
 
             self.camera.LastRot = self.camera.ThisRot;
-            self.camera.click(event.clientX - self.element.getBoundingClientRect().left, event.clientY - self.element.getBoundingClientRect().top);
+            //self.camera.click(event.clientX - self.element.getBoundingClientRect().left, event.clientY - self.element.getBoundingClientRect().top);
+            self.camera.click(event.clientX - self.element.getBoundingClientRect().left, self.element.getBoundingClientRect().bottom - event.clientY);
 
             return false;
         });
@@ -722,7 +723,8 @@
             if (self.canceler % 5 == 0)
             {
                 var mouse_x = event.clientX - self.element.getBoundingClientRect().left;
-                var mouse_y = event.clientY - self.element.getBoundingClientRect().top;
+                //var mouse_y = event.clientY - self.element.getBoundingClientRect().top;
+                var mouse_y = self.element.getBoundingClientRect().bottom - event.clientY;
                 self.rotate(mouse_x, mouse_y, self.get_low_resolution()); // Render low quality version
             }
         });
@@ -735,7 +737,8 @@
             }
 
             var mouse_x = event.clientX - self.element.getBoundingClientRect().left;
-            var mouse_y = event.clientY - self.element.getBoundingClientRect().top;
+            //var mouse_y = event.clientY - self.element.getBoundingClientRect().top;
+            var mouse_y = self.element.getBoundingClientRect().bottom - event.clientY;
 
             self.rotate(mouse_x, mouse_y, 0); // Render high quality version
             self.is_drag = false;
