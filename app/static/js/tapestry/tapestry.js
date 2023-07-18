@@ -129,7 +129,7 @@
             this.settings.filters = $(this.element).attr("data-filters").split(",");
         }
 
-        var original_position = $V([0, this.settings.zoom, 1, 1]);
+        var original_position = $V([0, 0, this.settings.zoom, 1]);
         if ($(this.element).attr("data-position"))
         {
             var temp = $(this.element).attr("data-position").split(",");
@@ -210,7 +210,7 @@
         this.camera.position = (typeof position !== 'undefined' ? position : $V([0, 0, this.settings.zoom, 1.0]));
 
         this.camera.setBounds(this.settings.width, this.settings.height);
-        this.camera.zoomScale = this.camera.position.elements[1];
+        this.camera.zoomScale = this.camera.position.elements[2];
     }
 
     /**
@@ -401,9 +401,9 @@
             host = this.settings.host + "/";
         }
 
-        var path = host + "image/" + dataset + "/" + x + "/" + y + "/" + z
-            + "/" + upx + "/" + upy + "/" + upz + "/"
-            + viewx + "/" + viewy + "/" + viewz + "/"
+        var path = host + "image/" + dataset + "/" + x + "/" + z + "/" + y
+            + "/" + (-upx) + "/" + (-upz) + "/" + (-upy) + "/"
+            + viewx + "/" + viewz + "/" + viewy + "/"
             + quality.toString() + "/" + options_str;
         return path;
     }
@@ -764,7 +764,7 @@
                 self.scroll_counter++; // this will grow indefinitely, must fix later
 
                 self.camera.zoomScale += delta;
-                self.camera.position.elements[1] = self.camera.zoomScale;
+                self.camera.position.elements[2] = self.camera.zoomScale;
                 self.render(self.get_low_resolution());
 
                 clearTimeout($.data(self, 'timer'));
